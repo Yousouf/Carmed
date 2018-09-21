@@ -2,23 +2,50 @@
 # https://symfony.com/doc/current/security.html
 security:
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    encoders:
+        FOS\UserBundle\Model\UserInterface: bcrypt
+
+    role_hierarchy:
+        ROLE_SIMPLE_USER: ROLE_SIMPLE_USER
+        ROLE_MANAGER:     ROLE_MANAGER
+        ROLE_ADMIN:       ROLE_SIMPLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_MANAGER]
+
     providers:
-        in_memory:
-            memory: ~
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
-            anonymous: ~
-            # activate different ways to authenticate
+            pattern: / #^/
+            form_login:
+                provider: fos_userbundle
+                default_target_path: admin # redirect to after login # override -> service
+                csrf_token_generator: security.csrf.token_manager
+                #success_handler: login_success_handler
+                #success_handler: authentification.handler.login # override by service
+                #success_handler: sp_auth_security.component.authentication.handler.login_success_handler
+                #csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
+                always_use_default_target_path: true
+                login_path: / #login path for dynamic redirection after session expires
+                remember_me: true  # On active la possibilité du "Se souvenir de moi" (désactivé par défaut)
+            remember_me:
+                 #token_provider: null
+                 secret: "%secret%"
+                 name: RememberMe
+                 lifetime: 31556951 # 1 year in seconds
+                 path: /
+                 httponly: true
+                 always_remember_me: true
+                 remember_me_parameter: 1
+                 #domain:   ~
+            logout:
+                 target: / # return to login page after logout
+                 invalidate_session: false # do not delete session after logout
+                 #delete_cookies:
+                      #RememberMe: { path: null, domain: null }
+            anonymous: true
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    access_control:
+        - { path: ^/admin, role: [ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_SIMPLE_USER] }
+        - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }

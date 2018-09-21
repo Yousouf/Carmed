@@ -20,7 +20,7 @@ use FOS\UserBundle\Model\UserInterface;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="sp_user")
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AuthBundle\Repository\UserRepository")
  */
 class User extends BaseUser

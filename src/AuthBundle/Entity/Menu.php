@@ -8,10 +8,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="sp_menu")
- * @ORM\Entity(repositoryClass="UserBundle\Repository\SpMenuRepository")
+ * @ORM\Table(name="menu")
+ * @ORM\Entity(repositoryClass="AuthBundle\Repository\MenuRepository")
  */
-class SpMenu
+class Menu
 {
     /**
      * @var int
@@ -51,13 +51,6 @@ class SpMenu
     private $class;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="isadmin", type="boolean")
-     */
-    private $isadmin;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="active", type="boolean")
@@ -70,23 +63,6 @@ class SpMenu
      * @ORM\Column(name="sort", type="integer")
      */
     private $sort;
-
-    public static function spectroFun()
-    {
-        return array(
-            '  ########   ########   ########   ########   ########   ########   ########',
-            '  ########   ########   ########   ########   ########   ########   ########',
-            '  ###        ##    ##   ##         ####          ##      ##    ##   ##    ##',
-            '  ###        ##    ##   ##         ###           ##      ##    ##   ##    ##',
-            '  ########   ########   ########   ##            ##      ########   ##    ##',
-            '  ########   ########   ########   ##            ##      ########   ##    ##',
-            '       ###   ###        ##         ###           ##      ## ##      ##    ##',
-            '       ###   ###        ##         ####          ##      ##  ##     ##    ##',
-            '  ########   ###        ########   ########      ##      ##   ##    ########',
-            '  ########   ###        ########   ########      ##      ##    ##   ########',
-            '                                                           © Youssef    2018',
-        );
-    }
 
     /**
      * Get id.
@@ -192,30 +168,6 @@ class SpMenu
     public function getClass()
     {
         return $this->class;
-    }
-
-    /**
-     * Set isadmin.
-     *
-     * @param bool $isadmin
-     *
-     * @return SpMenu
-     */
-    public function setIsadmin($isadmin)
-    {
-        $this->isadmin = $isadmin;
-
-        return $this;
-    }
-
-    /**
-     * Get isadmin.
-     *
-     * @return bool
-     */
-    public function getIsadmin()
-    {
-        return $this->isadmin;
     }
 
     /**

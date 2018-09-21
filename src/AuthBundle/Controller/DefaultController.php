@@ -21,16 +21,15 @@ class DefaultController extends Controller
      */
     public function menuAction($current_root = "")
     {
-        /*$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
 
         $user_menu = explode(",", $this->getUser()->getMenu());
 
         $menu = "";
         if(!empty($user_menu[0])){
-            // dump($user_menu);die();
-            $menu = $em->getRepository('UserBundle:SpMenu')->getUserMenu($user_menu);
-        }*/
-        $menu = "";
+            $menu = $em->getRepository('AuthBundle:Menu')->getUserMenu($user_menu, $current_root);
+        }
+
         return $this->render('AuthBundle:Partial:menu.html.twig',array('current_root'=>$current_root,'menus'=>$menu));
     }
 

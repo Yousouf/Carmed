@@ -1,0 +1,27 @@
+{% if menus != "" %}
+
+    {% for menu in menus %}
+        <li class="{% if loop.first %}start {% endif %} {% if menu.current %} active open{% endif %}">
+            <a href="{% if menu.children == "" and menu.root != "" %} {{ path(menu.root) }} {% else %} javascript:; {% endif %}">
+                <i class="{{ menu.icon }}"></i>
+                <span class="title">{{ menu.text }}</span>
+                {% if menu.children != "" %}
+                        {% if menu.current %}<span class="selected"></span>{% endif %}
+                        <span class="arrow {% if menu.current %} open {% endif %}"></span>
+                {% endif %}
+            </a>
+            {% if menu.children != "" %}
+                <ul class="sub-menu">
+                    {% for m in menu.children %}
+                        <li class="{% if m.current is defined %} active {% endif %}">
+                            <a href="{% if m.root != "" %} {{ path(m.root) }} {% else %} javascript:; {% endif %}">
+                                <i class="{{ m.icon }}"></i>
+                                {{ m.text }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+
+{% endif %}

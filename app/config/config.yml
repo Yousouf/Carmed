@@ -2,15 +2,18 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@AuthBundle/Resources/config/services.yml" }
+    - { resource: "@FabricationBundle/Resources/config/services.yml" }
+    - { resource: "@SalesBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: ~
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -30,12 +33,18 @@ framework:
     assets: ~
     php_errors:
         log: true
-
+    templating:
+            engines: ['twig']
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -57,7 +66,18 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-
+fos_user:
+    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+    firewall_name: main
+    user_class: AuthBundle\Entity\User # chemin de notre bundle d authentification
+    service:                               # this lines
+            mailer: fos_user.mailer.twig_swift # this lines
+    profile:
+        form:
+            type: AuthBundle\Form\ProfileFormType
+    from_email:
+        address: yousseftcom@gmail.com
+        sender_name: Administrateur
 # Swiftmailer Configuration
 swiftmailer:
     transport: '%mailer_transport%'

@@ -1,0 +1,140 @@
+{% extends "AuthBundle::layout.html.twig" %}
+
+{%block extra_css%}
+    {% stylesheets "@AuthBundle/Resources/public/css/users/select2.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    {% stylesheets "@AuthBundle/Resources/public/css/users/bootstrap-datepicker3.min.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{%block page_content%} 
+    <h3 class="page-title">
+        Gestion du stock <small>Stock</small>
+    </h3>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">Fabrication</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="{{  path('admin_fabrication_stock') }}">Mouvement du stock</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN VALIDATION STATES-->
+            <div class="portlet box green">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-gift"></i> {{ title }}
+                    </div>
+                    <div class="tools">
+                        <a href="#portlet-config" data-toggle="modal" class="config">
+                        </a>
+                        <a href="javascript:;" class="reload">
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <form action="" method="post" class="form-horizontal">
+                        <div class="form-body">
+                            <div class="alert alert-danger display-hide">
+                                <button class="close" data-close="alert"></button>
+                                You have some form errors. Please check below.
+                            </div>
+                            <div class="alert alert-success display-hide">
+                                <button class="close" data-close="alert"></button>
+                                Your form validation is successful!
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Matière première<span class="required">
+                                        * </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control select2me" name="id_product">
+                                        <option value="">Select...</option>
+                                        {% for item in products %}
+                                            <option value="{{ item.Id }}" {% if stock is defined and stock.idProduct == item.Id %} selected="selected" {% endif %}>{{ item.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Fournisseur<span class="required">
+                                        * </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control select2me" name="fournisseur">
+                                        <option value="">Select...</option>
+                                        {% for item in fournisseurs %}
+                                            <option value="{{ item.Id }}" {% if stock is defined and stock.idFournisseur == item.Id %} selected="selected" {% endif %} >{{ item.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Quantité <span class="required">
+                                        * </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" name="quantity" class="form-control" value="{% if stock is defined  %} {{ stock.quantity }}{% endif %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Mouvement <span class="required">
+                                        * </span>
+                                </label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="movement">
+                                        <option value="entree" {% if stock is defined and stock.movement == 'entree' %} selected="selected" {% endif %} >Entrée</option>
+                                        <option value="sortie" {% if stock is defined and stock.movement == 'sortie' %} selected="selected" {% endif %} >Sortie</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn green">Submit</button>
+                                    <button type="button" class="btn default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- END FORM-->
+                </div>
+                <!-- END VALIDATION STATES-->
+            </div>
+        </div>
+    </div>	
+{% endblock %}
+
+{%block extra_js%} 
+    {% javascripts '@AuthBundle/Resources/public/js/users/select2.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@FabricationBundle/Resources/public/js/jquery.validate.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@FabricationBundle/Resources/public/js/form-stock.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        jQuery(document).ready(function () {
+            //FormValidation.init()
+        });
+    </script>
+{% endblock %}

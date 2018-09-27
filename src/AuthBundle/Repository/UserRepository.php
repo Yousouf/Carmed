@@ -3,6 +3,7 @@
 namespace AuthBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 /**
  * UserRepository
  *
@@ -11,48 +12,61 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
-    /*
-     * Get Users
-     * @param boolean $active
-     * @param array $id_sites
-     * @param string $sort
-     * @param string $direction
-     * @param string $searchQuery
-     * @return array sites
-     */
-    public function getUsers ($active = true, $id_sites = array(), $sort = '', $direction = '', $searchQuery = '') {
-        $query = $this->_em->createQueryBuilder('u')
-            ->select('u')
-                //->addSelect('(SELECT COUNT(so1.id_customer) FROM DataSiteBundle:SiteOrder so1 WHERE so1.id_customer = sc.id_customer_site AND so1.id_site = sc.id_site) as orders')//, HIDDEN
-                //->addSelect('(SELECT IF(SUM(so2.total_paid_tax_incl / so2.conversion_rate) IS NULL, 0, SUM(so2.total_paid_tax_incl / so2.conversion_rate)) FROM DataSiteBundle:SiteOrder so2 WHERE so2.id_customer = sc.id_customer_site AND so2.id_site = sc.id_site) as sales')//, HIDDEN
-            ->from($this->_entityName, 'u');
-        
-        if($active) :
-            $query->andWhere('u.active = :active')->setParameter('active', (int)$active);
-        endif;
-        
-        if(count($id_sites)) :
-            //$query->andWhere('u.id IN (:id_site)')->setParameter('id_site', $id_sites);
-        endif;  
-        
-        if($searchQuery) :
-            $query->andWhere('u.id LIKE :searchQuery OR u.username LIKE :searchQuery OR u.lastname LIKE :searchQuery OR u.firstname LIKE :searchQuery OR u.email LIKE :searchQuery')->setParameter('searchQuery', '%'.$searchQuery.'%');
-        endif;
-        
-        if($sort && $direction) :
-            $query->orderBy($sort, $direction);
-        else :
-            $query->orderBy('u.username', 'ASC');
-        endif;
-        
-        
-        $users = $query->getQuery()->getResult();
-            
-        //echo '<pre>';
-        //print_r($query->getSql());
-        //die('end');
-        //$sites = $query->getResult();
+    public function getUsers($limit, $page, $desc, $orderBy, $q)
+    {
+        $query = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select("u.id as id, u.username as username, u.email as email, u.enabled as status,u.lastLogin as lastLogin, u.roles as roles, u.firstname as firstname, u.lastname as lastname, u.menu as menus")
+            ->from('AuthBundle:User', 'u')
+            ->where("u.id > 0");
 
-        return $users;
+        $query1 = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select("COUNT(u.id) as count")
+            ->from('AuthBundle:User', 'u')
+            ->where("u.id > 0");
+
+
+        if (!empty($q)) {
+            foreach ($q as $key => $val) {
+                $query->andwhere("u.$key LIKE '%$val%'");
+                $query1->andwhere("u.$key LIKE '%$val%'");
+            }
+        }
+
+        if ($orderBy != '') :
+            $query->orderBy("u.$orderBy", ($desc) ? 'DESC' : 'ASC');
+        endif;
+
+        $count = $query1->getQuery()->getOneOrNullResult();
+
+        if($limit == -1){
+            $results = $query->getQuery()->getArrayResult();
+        }else{
+            $paginator = new Paginator($query,false);
+            $paginator->getQuery()
+                ->setFirstResult($limit * ($page - 1))
+                ->setMaxResults($limit);
+
+            $results = $paginator->getIterator()->getArrayCopy();
+        }
+        foreach($results as &$result){
+			$records["data"][] = array(
+			  '<input type="checkbox" name="id[]" value="'.$result['id'].'">',
+			  $result['id'],
+			  $result['username'],
+			  $result['email'],
+			  $result['lastLogin']->format('Y-m-d H:i:s'),
+			  implode($result['roles'],'<br>'),
+			  $result['firstname'].' '.$result['lastname'],
+			  $result['status'],
+			  '<a href="#" class="btn btn-xs default btn-editable"><i class="fa fa-search"></i> View</a>',
+			);
+
+        }
+		$records["recordsTotal"] = $count['count'];
+		$records["recordsFiltered"] = $count['count'];
+		
+        return $records;
     }
 }

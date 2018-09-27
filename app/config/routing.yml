@@ -1,3 +1,13 @@
+sales:
+    resource: "@SalesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+fabrication:
+    resource: "@FabricationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 auth:
     resource: "@AuthBundle/Controller/"
     type:     annotation

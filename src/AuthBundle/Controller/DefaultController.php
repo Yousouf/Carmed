@@ -9,15 +9,15 @@ use Symfony\Component\BrowserKit\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/admin/dashbord", name="admin_dashbord")
      */
     public function indexAction()
     {
-        return $this->render('AuthBundle::layout.html.twig');
+        return $this->render('AuthBundle:dashbord:dashbord.html.twig');
     }
 
     /**
-     * @Route("/admin/menu", name="admin_menu")
+     * @Route("/admin/componet/menu", name="admin_componet_menu")
      */
     public function menuAction($current_root = "")
     {
@@ -34,7 +34,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/current_user", name="admin_current_user")
+     * @Route("/admin/componet/current_user", name="admin_componet_current_user")
      */
     public function currentUserAction()
     {
@@ -43,7 +43,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/admin/notification", name="admin_notification")
+     * @Route("/admin/componet/notification", name="admin_componet_notification")
      */
     public function notificationAction()
     {

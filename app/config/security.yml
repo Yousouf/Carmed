@@ -20,7 +20,7 @@ security:
             pattern: / #^/
             form_login:
                 provider: fos_userbundle
-                default_target_path: admin # redirect to after login # override -> service
+                default_target_path: admin_dashbord # redirect to after login # override -> service
                 csrf_token_generator: security.csrf.token_manager
                 #success_handler: login_success_handler
                 #success_handler: authentification.handler.login # override by service

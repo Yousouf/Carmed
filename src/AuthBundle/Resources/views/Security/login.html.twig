@@ -88,7 +88,7 @@
     <div class="content">
         <!-- BEGIN LOGIN FORM -->
         <form class="login-form" action="{{ path("fos_user_security_check") }}" id="login_form" method="post">
-            <input type="hidden" name="_target_path" value="{{ path('admin') }}"/>
+            <input type="hidden" name="_target_path" value="{{ path('admin_dashbord') }}"/>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
             <div class="form-title">
                 <span class="form-title">Bienvenue.</span>

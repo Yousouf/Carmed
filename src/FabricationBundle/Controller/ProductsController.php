@@ -59,7 +59,7 @@ class ProductsController extends Controller
 	 * 
 	 * @Method("Post")
      */
-    public function deleteAction()
+    public function deleteAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
 		

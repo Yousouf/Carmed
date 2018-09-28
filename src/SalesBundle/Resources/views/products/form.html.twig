@@ -1,0 +1,234 @@
+{% extends "AuthBundle::layout.html.twig" %}
+
+{% block extra_css %}
+    {% stylesheets "@AuthBundle/Resources/public/css/users/select2.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+    {% stylesheets "@AuthBundle/Resources/public/css/users/dataTables.bootstrap.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block page_content %}
+    <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    Widget settings form goes here
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn blue">Save changes</button>
+                    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <h3 class="page-title">
+        Gestion du matière première
+        <small> Matière première</small>
+    </h3>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">Vente</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="{{ path('admin_sales_products') }}">Produits</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal form-row-seperated" action="" method="post">
+                <div class="portlet">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-shopping-cart"></i>{{ title }}
+                        </div>
+                        <div class="actions btn-set">
+                            <button type="reset" class="btn default"><i class="fa fa-reply"></i> Reset</button>
+                            <button type="submit" class="btn green" name="save"  value="1"><i class="fa fa-check"></i> Enregistrer</button>
+                            <button type="submit" class="btn green" name="save_edit" value="1"><i class="fa fa-check-circle"></i> Enregistrer & Editer</button>
+                            <div class="btn-group">
+                                <a class="btn yellow dropdown-toggle" href="javascript:;" data-toggle="dropdown">
+                                    <i class="fa fa-share"></i> More <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="javascript:;">
+                                            Duplicate </a>
+                                    </li>
+                                    <!--li class="divider"-->
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            Print </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_general" data-toggle="tab">
+                                        General </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_meta" data-toggle="tab">
+                                        Promotion/Tax</a>
+                                </li>
+                                <li>
+                                    <a href="#tab_history" data-toggle="tab">
+                                        Historique </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content no-space">
+                                <div class="tab-pane active" id="tab_general">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Nom: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="product[name]" value="{% if product is defined %} {{ product.Name }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Description: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control" name="product[description]">{% if product is defined %} {{ product.Description }} {% endif %}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Description mini: <span
+                                                        class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control"
+                                                          name="product[short_description]">{% if product is defined %} {{ product.ShortDescription }} {% endif %}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Référence: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="product[sku]" value="{% if product is defined %} {{ product.sku }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Prix de vente: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="product[price]" value="{% if product is defined %} {{ product.price }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Statut: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="checkbox" name="product[status]" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Activé&nbsp;&nbsp;" data-off-text="&nbsp;Disactivé&nbsp;" {% if (product is defined and product.status == 1) or (product is not defined) %} checked="checked" {% endif %}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_meta">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Tax: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <select class="table-group-action-input form-control input-medium"
+                                                        name="product[tax]">
+                                                    <option value="">Select...</option>
+                                                    <option value="19" {% if product is defined and product.tax|number_format == 19 %} selected="selected" {% endif %} >19%</option>
+                                                    <option value="12" {% if product is defined and product.tax|number_format == 12 %} selected="selected" {% endif %} >12%</option>
+                                                    <option value="6"  {% if product is defined and product.tax|number_format == 6 %} selected="selected" {% endif %} >6%</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Utilisé Tax: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="checkbox" name="product[use_tax]" class="make-switch" checked data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Oui&nbsp;&nbsp;" data-off-text="&nbsp;Non&nbsp;" {% if (product is defined and product.useTax == 1) or (product is not defined) %} checked="checked" {% endif %}>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Promotion: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="product[promotion]" value="{% if product is defined %} {{ product.promo }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Activé Promotion: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="checkbox" name="product[enable_promo]" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Activé&nbsp;&nbsp;" data-off-text="&nbsp;Disactivé&nbsp;" {% if (product is defined and product.enablePromo == 1) or (product is not defined) %} checked="checked" {% endif %}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab_history">
+                                    <div class="table-container">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    {% javascripts '@AuthBundle/Resources/public/js/users/select2.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@AuthBundle/Resources/public/js/users/jquery.dataTables.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@AuthBundle/Resources/public/js/users/dataTables.bootstrap.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        jQuery(document).ready(function () {
+
+        });
+    </script>
+{% endblock %}
+
+

@@ -64,7 +64,7 @@
                                     <select class="form-control select2me" name="id_product">
                                         <option value="">Select...</option>
                                         {% for item in products %}
-                                            <option value="{{ item.Id }}" {% if stock is defined and stock.idProduct == item.Id %} selected="selected" {% endif %}>{{ item.name }}</option>
+                                            <option value="{{ item.Id }}" {% if stock is defined and stock.idProduct == item.Id %} selected="selected" {% endif %}>{{ item.name }}({{ item.type }})</option>
                                         {% endfor %}
                                     </select>
                                 </div>

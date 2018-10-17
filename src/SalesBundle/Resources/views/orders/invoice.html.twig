@@ -1,0 +1,227 @@
+{% extends "AuthBundle::layout.html.twig" %}
+
+{%block extra_css%}
+{% stylesheets "@SalesBundle/Resources/public/css/invoice.css" %}
+<link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+{% endblock %}
+
+{%block page_content%} 
+    <!-- BEGIN PAGE HEADER-->
+    <h3 class="page-title">
+        Facture <small></small>
+    </h3>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">Vente</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="{{ path('admin_sales_orders') }}">Commande</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">Invoice</a>
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-fit-height grey-salt dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                    Actions <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="#">Action</a>
+                    </li>
+                    <li>
+                        <a href="#">Another action</a>
+                    </li>
+                    <li>
+                        <a href="#">Something else here</a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a href="#">Separated link</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE HEADER-->
+    <!-- BEGIN PAGE CONTENT-->
+    <div class="invoice">
+        <div class="row invoice-logo">
+            <div class="col-xs-6 invoice-logo-space">
+                
+            </div>
+            <div class="col-xs-6">
+                <p>
+                    {% if invoice_number > 0 %} {{ invoice_number }} {% else %} 000000 {% endif %}/ {{ invoice_date }}
+                    <span class="muted"> </span>
+                </p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-xs-4">
+                <h3>Client:</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        {{ current_customer.firstname }}
+                    </li>
+                    <li>
+                        {{ current_customer.lastname }}
+                    </li>
+                    <li>
+                        {{ current_customer.mobile }}
+                    </li>
+                    <li>
+                        {{ current_customer.invoice_address }}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-4">
+                
+            </div>
+            <div class="col-xs-4 invoice-payment">
+                <h3>Détails Payement:</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <strong>Méthode de payement:</strong> {{ data.payment}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Nom
+                            </th>
+                            <th class="hidden-480">
+                                Description
+                            </th>
+                            <th class="hidden-480">
+                                Quantité
+                            </th>
+                            <th class="hidden-480">
+                                PU HT
+                            </th>
+                            <th>
+                                Total HT
+                            </th>
+							<th>
+                                TVA
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data.products %}
+                        <tr>
+                            <td>
+                                {{ item.id }}
+                            </td>
+                            <td>
+                                {{ item.name }}
+                            </td>
+                            <td class="hidden-480">
+                                
+                            </td>
+                            <td class="hidden-480">
+                                {{ item.quantity }}
+                            </td>
+                            <td class="hidden-480">
+                                {{ item.price }} TND
+                            </td>
+                            <td>
+                                {{ item.total }} TND
+                            </td>
+							<td>
+                                {{ item.tax }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="well">
+                    <address>
+                        <strong>Caremed</strong><br/>
+                        Rue Mohamed ben Hbib karma<br/>
+                        Nabeul 8000<br/>
+                        Tél:(216) 72 287 588<br/>
+						Fax: (216) 72 287 499
+						</address>
+                    <address>
+                        <strong>Email</strong><br/>
+                            labo@caremed.com.tn
+                    </address>
+					<address>
+                        <strong>Site web</strong><br/>
+                            http://www.caremed.com.tn
+                    </address>
+                </div>
+            </div>
+            <div class="col-xs-4  invoice-block">
+                <div class="col-xs-12 amounts"><center><strong>{{ total_lettre }}</strong></center></div>
+				<br/><br/><br/><br/><br/>
+				<div class="col-xs-12 amounts"><center>Signature et Cachet</center></div>
+				
+            </div>
+            <div class="col-xs-4 invoice-block">
+                <ul class="list-unstyled amounts">
+                    <li>
+                        <strong>Toal HT:</strong> {{ data.sub_total }} TND
+                    </li>
+                    <li>
+                        <strong>CODEC 1%:</strong> {{ data.marge }}  TND
+                    </li>
+                    <li>
+                        <strong>Transport:</strong> {{ data.carrier.cost }}  TND 
+                    </li>
+                    <li>
+                        <strong>TVA 19%:</strong> {{ data.total_tax }}  TND
+                    </li>
+                    <li>
+                        <strong>Timbre fiscale:</strong> 0.600 TND
+                    </li>
+                    <li>
+                        <strong>Total TTC:</strong> {{ data.total }} TND
+                    </li>
+                </ul>
+                <br/>
+                {% if invoice_number > 0 %}
+                    <a class="btn btn-lg blue hidden-print margin-bottom-5" onclick="javascript:window.print();">
+                        Print <i class="fa fa-print"></i>
+                    </a>
+                {% else %}
+                    <form action="" method="post">
+                        <button type="submit" class="btn btn-lg green hidden-print margin-bottom-5">
+                            Valider Facture <i class="fa fa-check"></i>
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE CONTENT-->		
+{% endblock %}
+
+{%block extra_js%} 
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="sp-error-content">
+    <div class="sp-error-content--block">
+      {% image '@MediaBundle/Resources/public/images/new-logo.png' %}
+        <img src="{{ asset_url }}" alt="spectro logo" />
+      {% endimage %}
+      <p class="lead">
+        Accès refusé. 
+      </p>
+      <p>
+        Vous n'êtes pas autorisé à consulter cette page.
+      </p>
+      <p>Code erreur : 403</p>
+      <p>
+        <a href="{{ path('dashboard') }}">Retour à la page d'accès </a>.
+      </p>
+    </div>
+  </div>
+{% endblock %}

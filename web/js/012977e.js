@@ -19,16 +19,16 @@ var TableAdvanced = function () {
             // Internationalisation. For more info refer to http://datatables.net/manual/i18n
             "language": {
                 "aria": {
-                    "sortAscending": ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
+                    "sortAscending": ": Activer pour trier la colonne par ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne par ordre décroissant"
                 },
                 "emptyTable": "Aucune donnée disponible",
-                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "infoEmpty": "No entries found",
-                "infoFiltered": "(filtered1 from _MAX_ total entries)",
-                "lengthMenu": "Show _MENU_ entries",
-                "search": "Search:",
-                "zeroRecords": "No matching records found"
+                "info": "Affichage de _START_ à _END_ sur _TOTAL_ clients",
+                "infoEmpty": "Aucun client trouvé",
+                "infoFiltered": "(filtré1 sur _MAX_ clients totales)",
+                "lengthMenu": "Affichage _MENU_",
+                "search": "Recherche:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés"
             },
 
             "order": [

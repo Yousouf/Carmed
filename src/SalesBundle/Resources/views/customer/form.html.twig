@@ -1,0 +1,208 @@
+{% extends "AuthBundle::layout.html.twig" %}
+
+{% block extra_css %}
+    {% stylesheets "@AuthBundle/Resources/public/css/users/select2.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+    {% stylesheets "@AuthBundle/Resources/public/css/users/dataTables.bootstrap.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+{% endblock %}
+
+{% block page_content %}
+    <div class="modal fade" id="portlet-config" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    Widget settings form goes here
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn blue">Save changes</button>
+                    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <h3 class="page-title">
+        Gestion du matière première
+        <small> Matière première</small>
+    </h3>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="#">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">Vente</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="{{ path('admin_sales_customer') }}">Clients</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal form-row-seperated" action="" method="post">
+                <div class="portlet">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-shopping-cart"></i>{{ title }}
+                        </div>
+                        <div class="actions btn-set">
+                            <button type="reset" class="btn default"><i class="fa fa-reply"></i> Reset</button>
+                            <button type="submit" class="btn green" name="save" value="1"><i class="fa fa-check"></i>
+                                Enregistrer
+                            </button>
+                            <button type="submit" class="btn green" name="save_edit" value="1"><i
+                                        class="fa fa-check-circle"></i> Enregistrer & Editer
+                            </button>
+                            <div class="btn-group">
+                                <a class="btn yellow dropdown-toggle" href="javascript:;" data-toggle="dropdown">
+                                    <i class="fa fa-share"></i> More <i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="javascript:;">
+                                            Duplicate </a>
+                                    </li>
+                                    <!--li class="divider"-->
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            Print </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_general" data-toggle="tab">
+                                        General </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content no-space">
+                                <div class="tab-pane active" id="tab_general">
+                                    <div class="form-body">
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Prénom: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="firstname"
+                                                       value="{% if customer is defined %} {{ customer.firstname }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Nom: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="lastname"
+                                                       value="{% if customer is defined %} {{ customer.lastname }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Email: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="email"
+                                                       value="{% if customer is defined %} {{ customer.email }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Mobile: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="mobile"
+                                                       value="{% if customer is defined %} {{ customer.mobile }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Cité: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="city"
+                                                       value="{% if customer is defined %} {{ customer.city }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Pays: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="country"
+                                                       value="{% if customer is defined %} {{ customer.country }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Code Postale: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="postalcode"
+                                                       value="{% if customer is defined %} {{ customer.postalcode }} {% endif %}"
+                                                       placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Adresse: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control"
+                                                          name="address">{% if customer is defined %} {{ customer.address }} {% endif %}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    {% javascripts '@AuthBundle/Resources/public/js/users/select2.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@AuthBundle/Resources/public/js/users/jquery.dataTables.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@AuthBundle/Resources/public/js/users/dataTables.bootstrap.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script>
+        jQuery(document).ready(function () {
+
+        });
+    </script>
+{% endblock %}
+
+

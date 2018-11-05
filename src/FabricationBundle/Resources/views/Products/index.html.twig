@@ -1,14 +1,17 @@
 {% extends "AuthBundle::layout.html.twig" %}
 
-{% block extra_css %}
+{%block extra_css%}
     {% stylesheets "@AuthBundle/Resources/public/css/users/select2.css" %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    {% stylesheets "@FabricationBundle/Resources/public/css/dataTables.scroller.min.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    {% stylesheets "@FabricationBundle/Resources/public/css/dataTables.colReorder.min.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
     {% stylesheets "@AuthBundle/Resources/public/css/users/dataTables.bootstrap.css" %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
-    {% endstylesheets %}
-    {% stylesheets "@AuthBundle/Resources/public/css/users/bootstrap-datepicker3.min.css" %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
+    <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 {% endblock %}
 
@@ -34,8 +37,8 @@
         <!-- /.modal-dialog -->
     </div>
     <h3 class="page-title">
-        Gestion du matière première
-        <small> Matière première </small>
+        Matière première
+        <small> Gestion du matière première</small>
     </h3>
     <div class="page-bar">
         <ul class="page-breadcrumb">
@@ -52,6 +55,13 @@
                 <a href="#">Matière première</a>
             </li>
         </ul>
+		<div class="page-toolbar">
+            <div class="btn-group pull-right">
+                <a href="{{ path('admin_fabrication_products_add') }}" class="btn green">
+                    <i class="fa fa-plus"></i> Ajouter un nouveau
+                </a>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -61,47 +71,9 @@
                     <div class="caption">
                         <i class="fa fa-edit"></i>Gestion de matiere premiere
                     </div>
-                    <div class="tools">
-                        <a href="#portlet-config" data-toggle="modal" class="config">
-                        </a>
-                        <a href="javascript:;" class="reload">
-                        </a>
-                    </div>
                 </div>
                 <div class="portlet-body">
-                    <div class="table-toolbar">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="btn-group">
-                                    <button id="sample_editable_new" class="btn green">
-                                        Ajouter un nouveau <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="btn-group pull-right">
-                                    <button class="btn dropdown-toggle" data-toggle="dropdown">Tools <i
-                                                class="fa fa-angle-down"></i>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right">
-                                        <li>
-                                            <a href="javascript:;">
-                                                Print </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                Save as PDF </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                Export to Excel </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <table class="table table-striped table-hover table-bordered" id="sample_editable">
+                    <table class="table table-striped table-hover table-bordered" id="advenced_table">
                         <thead>
                         <tr>
                             <th>
@@ -122,11 +94,11 @@
                             <th>
                                 Unit
                             </th>
-                            <th width="80">
-                                Editer
+							<th>
+                                Emballage
                             </th>
-                            <th width="80">
-                                Supprimer
+                            <th width="110">
+                                Actions
                             </th>
                         </tr>
                         </thead>
@@ -151,14 +123,17 @@
                                 <td>
                                     {{ item.Unit }}
                                 </td>
-                                <td>
-                                    <a class="edit btn btn-xs blue" data-id="{{ item.id }}" href="javascript:;">
-                                        <i class="fa fa-edit"></i> Editer </a>
-                                </td>
-                                <td>
-                                    <a class="delete btn btn-xs red" data-id="{{ item.id }}" href="javascript:;">
-                                        <i class="fa fa-times"></i> Supprimer </a>
-                                </td>
+								<td  class="text-center" width="20">
+									{% if item.Emballage == 1 %} <span class="glyphicon glyphicon-thumbs-up font-green"></span> {% else %}  <span class="glyphicon glyphicon-thumbs-down font-red"></span>{% endif %}
+								</td>
+                                <td width="110" class="text-center">
+									<a href="{{ path('admin_fabrication_products_update',{id:item.id}) }}" class="btn btn-icon-only blue">
+										<i class="fa fa-edit"></i>
+									</a>
+									<a href="{{ path('admin_fabrication_products_delete',{id:item.id}) }}" class="btn btn-icon-only red">
+										<i class="fa fa-trash-o"></i>
+									</a>
+								</td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -171,23 +146,32 @@
 
 {% endblock %}
 
-{% block extra_js %}
+{%block extra_js%}
     {% javascripts '@AuthBundle/Resources/public/js/users/select2.min.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% javascripts '@AuthBundle/Resources/public/js/users/jquery.dataTables.min.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    {% javascripts '@FabricationBundle/Resources/public/js/dataTables.tableTools.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@FabricationBundle/Resources/public/js/dataTables.colReorder.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@FabricationBundle/Resources/public/js/dataTables.scroller.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     {% javascripts '@AuthBundle/Resources/public/js/users/dataTables.bootstrap.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% javascripts '@FabricationBundle/Resources/public/js/table-editable-products.js' %}
+    {% javascripts '@FabricationBundle/Resources/public/js/stock.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
     <script>
         jQuery(document).ready(function () {
-            TableEditable.init()
+            TableAdvanced.init()
         });
     </script>
 {% endblock %}

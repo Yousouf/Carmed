@@ -31,7 +31,7 @@
         <!-- /.modal-dialog -->
     </div>
     <h3 class="page-title">
-        Produits <small> Formulaire produits</small>
+        Formulaire <small> Matière première</small>
     </h3>
     <div class="page-bar">
         <ul class="page-breadcrumb">
@@ -45,7 +45,7 @@
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a href="{{ path('admin_sales_products') }}">Produits</a>
+                <a href="{{ path('admin_fabrication_products') }}">Matière première</a>
             </li>
         </ul>
     </div>
@@ -87,14 +87,6 @@
                                     <a href="#tab_general" data-toggle="tab">
                                         General </a>
                                 </li>
-                                <li>
-                                    <a href="#tab_meta" data-toggle="tab">
-                                        Promotion/Tax</a>
-                                </li>
-                                <li>
-                                    <a href="#tab_history" data-toggle="tab">
-                                        Historique </a>
-                                </li>
                             </ul>
                             <div class="tab-content no-space">
                                 <div class="tab-pane active" id="tab_general">
@@ -104,26 +96,8 @@
 													* </span>
                                             </label>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" name="product[name]" value="{% if product is defined %} {{ product.Name }} {% endif %}"
+                                                <input type="text" class="form-control" name="name" value="{% if product is defined %} {{ product.Name }} {% endif %}"
                                                        placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Description: <span class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <textarea class="form-control" name="product[description]">{% if product is defined %} {{ product.Description }} {% endif %}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Description mini: <span
-                                                        class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <textarea class="form-control"
-                                                          name="product[short_description]">{% if product is defined %} {{ product.ShortDescription }} {% endif %}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -131,83 +105,55 @@
 													* </span>
                                             </label>
                                             <div class="col-md-10">
-                                                <input type="text" class="form-control" name="product[sku]" value="{% if product is defined %} {{ product.sku }} {% endif %}"
+                                                <textarea class="form-control" name="reference">{% if product is defined %} {{ product.Reference }} {% endif %}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Prix d'achat: <span
+                                                        class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control"
+                                                          name="price">{% if product is defined %} {{ product.WholesalePrice }} {% endif %}</textarea>
+                                            </div>
+                                        </div>
+										<div class="form-group">
+                                            <label class="col-md-2 control-label">Tax: <span
+                                                        class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control"
+                                                          name="tax">{% if product is defined %} {{ product.Tax }} {% endif %}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">Type: <span class="required">
+													* </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" name="type" value="{% if product is defined %} {{ product.Type }} {% endif %}"
                                                        placeholder="">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-2 control-label">Prix de vente HT: <span class="required">
+                                            <label class="col-md-2 control-label">Unité: <span class="required">
 													* </span>
                                             </label>
                                             <div class="col-md-10">
-                                                <input type="text" id="product_price" class="form-control" name="product[price]" onChange="UpdateTTC()" value="{% if product is defined %} {{ product.price }} {% endif %}"
+                                                <input type="text" id="product_price" class="form-control" name="unit" value="{% if product is defined %} {{ product.Unit }} {% endif %}"
                                                        placeholder="">
                                             </div>
                                         </div>
 										<div class="form-group">
-                                            <label class="col-md-2 control-label">Prix de vente TTC: <span class="required">
+                                            <label class="col-md-2 control-label">Emballage: <span class="required">
 													* </span>
                                             </label>
                                             <div class="col-md-10">
-                                                <input type="text" disabled id="product_price_ttc" class="form-control" name="product[price_ttc]" value="{% if product is defined %} {{ product.price }} {% endif %}"
-                                                       placeholder="">
+                                                <input type="checkbox" value="1" name="data[emballage]" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Oui&nbsp;&nbsp;" data-off-text="&nbsp;Non&nbsp;" {% if (product is defined and product.Emballage == 1) %} checked {% endif %}>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Statut: <span class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <input type="checkbox" name="product[status]" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Activé&nbsp;&nbsp;" data-off-text="&nbsp;Disactivé&nbsp;" {% if (product is defined and product.status == 1) or (product is not defined) %} checked="checked" {% endif %}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tab_meta">
-                                    <div class="form-body">
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Tax: <span class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <select id="product_ttc" class="table-group-action-input form-control input-medium"
-                                                        name="product[tax]" onChange="UpdateTTC()">
-                                                    <option value="19" {% if product is defined and product.tax|number_format == 19 %} selected="selected" {% endif %} >19%</option>
-                                                    <option value="12" {% if product is defined and product.tax|number_format == 12 %} selected="selected" {% endif %} >12%</option>
-                                                    <option value="6"  {% if product is defined and product.tax|number_format == 6 %} selected="selected" {% endif %} >6%</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Utilisé Tax: <span class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <input type="checkbox" name="product[use_tax]" class="make-switch" checked data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Oui&nbsp;&nbsp;" data-off-text="&nbsp;Non&nbsp;" {% if (product is defined and product.useTax == 1) or (product is not defined) %} checked="checked" {% endif %}>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Promotion: <span class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <input type="text" class="form-control" name="product[promotion]" value="{% if product is defined %} {{ product.promo }} {% endif %}"
-                                                       placeholder="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-2 control-label">Activé Promotion: <span class="required">
-													* </span>
-                                            </label>
-                                            <div class="col-md-10">
-                                                <input type="checkbox" name="product[enable_promo]" class="make-switch" data-on-color="success" data-off-color="danger" data-on-text="&nbsp;Activé&nbsp;&nbsp;" data-off-text="&nbsp;Disactivé&nbsp;" {% if (product is defined and product.enablePromo == 1) or (product is not defined) %} checked="checked" {% endif %}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tab_history">
-                                    <div class="table-container">
-
                                     </div>
                                 </div>
                             </div>
@@ -231,18 +177,6 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
-    <script>
-	function UpdateTTC(){
-		var price = parseFloat($('#product_price').val());
-		var ttc = parseFloat($('#product_ttc option:selected').val());
-		var price_ttc = price * (1+(ttc/100));
-		$('#product_price_ttc').val(price_ttc.toFixed(3));
-		
-	}
-        jQuery(document).ready(function () {
-
-        });
-    </script>
 {% endblock %}
 
 

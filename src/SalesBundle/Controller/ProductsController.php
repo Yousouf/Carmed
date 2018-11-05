@@ -5,10 +5,12 @@ namespace SalesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use SalesBundle\Entity\SalesProduct;
+use SalesBundle\Classes\TCPDFClass;
 
 class ProductsController extends Controller
 {
@@ -33,7 +35,29 @@ class ProductsController extends Controller
 
         $products = $em->getRepository('SalesBundle:SalesProduct')->findAll();
 
-        return $this->render('SalesBundle:products:list.html.twig',array('data'=>$products));
+        $pdf = new TCPDFClass('P', 'mm', 'A4', true, 'UTF-8', false, false);
+        $pdf->SetAuthor('Admin Caremed');
+        $pdf->SetTitle('Liste Produits');
+        $pdf->SetAutoPageBreak(true, 30);
+        $pdf->SetMargins(5, 40, 5, true);
+        $pdf->SetHeaderMargin(50);
+        $pdf->SetFooterMargin(30);
+        $pdf->AddPage();
+
+        $filename = "product_list_";
+        $html = $this->renderView(
+            'SalesBundle:products:list.html.twig',array('data'=>$products)
+        );
+
+        $pdf->writeHTMLCell($w = 0, $h = 0, $x = '', $y = '', $html, $border = 0, $ln = 1, $fill = 0, $reseth = true, $align = '', $autopadding = true);
+
+
+
+        $response = new Response($pdf->Output($filename . ".pdf", 'I'));
+        $response->headers->set('Content-type', 'application/pdf');
+
+        return $response;
+        //return $this->render('SalesBundle:products:list.html.twig',array('data'=>$products));
     }
 
     /**

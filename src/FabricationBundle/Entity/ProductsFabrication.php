@@ -62,6 +62,13 @@ class ProductsFabrication
      * @ORM\Column(name="unit", type="string", length=128, nullable=true)
      */
     private $unit;
+	
+	 /**
+     * @var int
+     *
+     * @ORM\Column(name="emballage", type="smallint")
+     */
+    private $emballage;
 
     /**
      * @var \DateTime
@@ -269,7 +276,6 @@ class ProductsFabrication
 
         return $this;
     }
-
     /**
      * Get tax.
      *
@@ -278,5 +284,29 @@ class ProductsFabrication
     public function getTax()
     {
         return $this->tax;
+    }
+	
+	 /**
+     * Set emballage.
+     *
+     * @param int $emballage
+     *
+     * @return ProductsFabrication
+     */
+    public function setEmballage($emballage)
+    {
+        $this->emballage = $emballage;
+
+        return $this;
+    }
+
+    /**
+     * Get emballage.
+     *
+     * @return int
+     */
+    public function getEmballage()
+    {
+        return $this->emballage;
     }
 }

@@ -23,6 +23,18 @@ class ProductsController extends Controller
 
         return $this->render('SalesBundle:products:index.html.twig',array('data'=>$products));
     }
+	
+	 /**
+     * @Route("/admin/sales/products/list",name="admin_sales_products_list")
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $products = $em->getRepository('SalesBundle:SalesProduct')->findAll();
+
+        return $this->render('SalesBundle:products:list.html.twig',array('data'=>$products));
+    }
 
     /**
      * @Route("/admin/sales/products/add",name="admin_sales_products_add")

@@ -55,7 +55,76 @@ class ProductsController extends Controller
     }
 	
 	/**
-     * @Route("/admin/fabrication/products/delete",name="admin_fabrication_products_delete")
+     * @Route("/admin/fabrication/products/add",name="admin_fabrication_products_add")
+	 * 
+	 * @Method("Post")
+     */
+    public function addAction(Request $request)
+    {
+		$em = $this->getDoctrine()->getManager();
+		
+		if ($request->getMethod() == 'POST') {
+			$data = $request->get('data');
+			$product = new ProductsFabrication();
+			$product->setName((string)$request->get('name'));
+			$product->setReference((string)$request->get('reference'));
+			$product->setWholesalePrice((float)$request->get('price'));
+			$product->setTax((float)$request->get('tax'));
+			$product->setType((string)$request->get('type'));
+			$product->setUnit((string)$request->get('unit'));
+			$product->setEmballage((isset($data['emballage'])) ? 1 : 0);
+			$product->setDateAdd(new \DateTime());
+			$product->setDateUpd(new \DateTime());
+
+			$em->persist($product);	
+			$em->flush($product);
+
+			if((int)$request->get('save'))
+                return $this->redirectToRoute('admin_fabrication_products');
+            elseif((int)$request->get('save_edit'))
+                return $this->redirectToRoute('admin_fabrication_products_update',array('id'=>$product->getId()));			
+		}
+		
+		return $this->render('FabricationBundle:products:form.html.twig',array('title'=>"Ajout d'un Matière première"));
+    }
+	
+	/**
+     * @Route("/admin/fabrication/products/update/{id}",name="admin_fabrication_products_update")
+	 * 
+	 * @Method("Post")
+     */
+    public function updateAction(Request $request)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$product = $em->getRepository('FabricationBundle:ProductsFabrication')->findOneBy(array('id'=>(int)$request->get('id')));
+		
+		if ($request->getMethod() == 'POST') {
+			
+			$data = $request->get('data');
+			
+			$product->setName((string)$request->get('name'));
+			$product->setReference((string)$request->get('reference'));
+			$product->setWholesalePrice((float)$request->get('price'));
+			$product->setTax((float)$request->get('tax'));
+			$product->setType((string)$request->get('type'));
+			$product->setUnit((string)$request->get('unit'));
+			$product->setEmballage((isset($data['emballage'])) ? 1 : 0);
+			$product->setDateUpd(new \DateTime());
+
+			$em->persist($product);	
+			$em->flush($product);
+
+			if((int)$request->get('save'))
+                return $this->redirectToRoute('admin_fabrication_products');
+            elseif((int)$request->get('save_edit'))
+                return $this->redirectToRoute('admin_fabrication_products_update',array('id'=>$product->getId()));			
+		}
+		
+		return $this->render('FabricationBundle:products:form.html.twig',array('product'=>$product,'title'=>"Mise à jour Matière première"));
+    }
+	
+	/**
+     * @Route("/admin/fabrication/products/delete/{id}",name="admin_fabrication_products_delete")
 	 * 
 	 * @Method("Post")
      */
@@ -70,6 +139,6 @@ class ProductsController extends Controller
 			$em->clear();
 		}
 		
-        return new JsonResponse(1);
+        return $this->redirectToRoute('admin_fabrication_products');
     }
 }

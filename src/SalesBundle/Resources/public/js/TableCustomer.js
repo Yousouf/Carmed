@@ -23,8 +23,8 @@ var TableAdvanced = function () {
                     "sortDescending": ": Activer pour trier la colonne par ordre décroissant"
                 },
                 "emptyTable": "Aucune donnée disponible",
-                "info": "Affichage de _START_ à _END_ sur _TOTAL_ clients",
-                "infoEmpty": "Aucun client trouvé",
+                "info": "Affichage de _START_ à _END_ sur _TOTAL_",
+                "infoEmpty": "Aucun donnée trouvé",
                 "infoFiltered": "(filtré1 sur _MAX_ clients totales)",
                 "lengthMenu": "Affichage _MENU_",
                 "search": "Recherche:",
